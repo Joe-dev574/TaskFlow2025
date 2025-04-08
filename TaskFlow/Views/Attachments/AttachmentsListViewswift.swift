@@ -11,38 +11,20 @@ import AVFoundation // For camera permission
 
 struct AttachmentsListView: View {
     // MARK: - Properties
-    
-    /// Environment object for SwiftData model context to persist attachments
     @Environment(\.modelContext) private var modelContext
-    
-    /// Binding to the array of attachments managed by the parent view
     @Binding var attachments: [Attachment]
-    
-    /// The category of the item, used for consistent coloring
     let itemCategory: Category
-    
-    /// Binding to control the blur state of the parent view during attachment actions
     @Binding var isBlurred: Bool
-    
-    /// State to show the camera picker sheet
     @State private var showingImagePicker = false
-    
-    /// State to hold the captured image from the camera
     @State private var cameraImage: UIImage?
-    
-    /// State to display error messages in an alert
     @State private var errorMessage: String?
     
     // MARK: - Computed Properties
-    
-    /// Returns attachments sorted by creation date (newest first)
     var sortedAttachments: [Attachment] {
         attachments.sorted { $0.creationDate > $1.creationDate }
     }
     
     // MARK: - Initialization
-    
-    /// Initializes the view with bindings and category
     init(attachments: Binding<[Attachment]>, itemCategory: Category, isBlurred: Binding<Bool>) {
         self._attachments = attachments
         self.itemCategory = itemCategory
