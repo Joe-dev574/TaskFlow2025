@@ -5,56 +5,31 @@
 //  Created by Joseph DeWeese on 4/6/25.
 //
 
+
 import SwiftUI
 import SwiftData
 import AVFoundation // For camera permission
 
 struct AttachmentsListView: View {
-    // MARK: - Properties
-    
-    /// SwiftData context for saving attachments
     @Environment(\.modelContext) private var modelContext
-    
-    /// Binding to the parent’s attachments array
     @Binding var attachments: [Attachment]
-    
-    /// Category for UI coloring
     let itemCategory: Category
-    
-    /// Binding to toggle parent view blur
     @Binding var isBlurred: Bool
-    
-    /// Controls camera sheet visibility
     @State private var showingImagePicker = false
-    
-    /// Holds the camera-captured image
     @State private var cameraImage: UIImage?
-    
-    /// Displays save error messages
     @State private var errorMessage: String?
-    
-    /// Tracks alert visibility
     @State private var showErrorAlert = false
     
-    // MARK: - Computed Properties
-    
-    /// Sorts attachments by date, newest first
     var sortedAttachments: [Attachment] {
         attachments.sorted { $0.creationDate > $1.creationDate }
     }
     
-    // MARK: - Initialization
-    
-    /// Sets up the view with bindings
     init(attachments: Binding<[Attachment]>, itemCategory: Category, isBlurred: Binding<Bool>) {
         self._attachments = attachments
         self.itemCategory = itemCategory
         self._isBlurred = isBlurred
     }
     
-    // MARK: - Body
-    
-    /// Main layout with navigation and scrollable sections
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -86,6 +61,22 @@ struct AttachmentsListView: View {
                     }
                     .accessibilityLabel("Take Photo")
                     .accessibilityHint("Tap to take a photo")
+                    
+                    Button(action: {
+                        print("Photos button tapped")
+                    }) {
+                        HStack {
+                            Image(systemName: "photo")
+                                .foregroundStyle(itemCategory.color)
+                            Text("Add from Photos")
+                                .foregroundStyle(itemCategory.color)
+                        }
+                        .padding(7)
+                        .background(itemCategory.color.opacity(0.2))
+                        .cornerRadius(8)
+                    }
+                    .accessibilityLabel("Add from Photos")
+                    .accessibilityHint("Tap to select a photo from your library")
                     
                     if attachments.isEmpty {
                         Text("No attachments")
