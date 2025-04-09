@@ -343,39 +343,33 @@ struct ItemEditView: View {
         )
     }
     
-    // MARK: Task Section
     private var taskSection: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            TaskListView(itemTasks: $itemTasks, itemCategory: itemCategory, isBlurred: $isBlurred)
-                .padding(SectionStyle.padding)
-                .background(itemCategory.color.opacity(SectionStyle.reducedOpacity))
-                .clipShape(RoundedRectangle(cornerRadius: SectionStyle.cornerRadius))
-        }
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear { print("List size: \(geometry.size)") }
+        /// Minimum height of the text editor to ensure visibility
+            VStack(alignment: .leading, spacing: 5) {
+                TaskListView(itemTasks: $itemTasks, itemCategory: itemCategory, isBlurred: $isBlurred)
+                    .padding(SectionStyle.padding)
+                    .background(itemCategory.color.opacity(SectionStyle.reducedOpacity))
+                    .clipShape(RoundedRectangle(cornerRadius: SectionStyle.cornerRadius))
             }
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: SectionStyle.cornerRadius)
-                .stroke(itemCategory.color.opacity(0.3), lineWidth: 2)
-        )
-    }
+            .overlay(
+                RoundedRectangle(cornerRadius: SectionStyle.cornerRadius)
+                    .stroke(itemCategory.color.opacity(0.3), lineWidth: 2)
+            )
+        }
     
     // MARK: Note Section
     private var noteSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            NotesListView(notes: $notes, itemCategory: itemCategory, isBlurred: $isBlurred)
+            VStack(alignment: .leading, spacing: 8) {
+                NotesListView(notes: $notes, itemCategory: itemCategory, isBlurred: $isBlurred)
+            }
+            .padding(SectionStyle.padding)
+            .background(itemCategory.color.opacity(SectionStyle.reducedOpacity))
+            .clipShape(RoundedRectangle(cornerRadius: SectionStyle.cornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: SectionStyle.cornerRadius)
+                    .stroke(itemCategory.color.opacity(0.3), lineWidth: 2)
+            )
         }
-        .padding(SectionStyle.padding)
-        .background(itemCategory.color.opacity(SectionStyle.reducedOpacity))
-        .clipShape(RoundedRectangle(cornerRadius: SectionStyle.cornerRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: SectionStyle.cornerRadius)
-                .stroke(itemCategory.color.opacity(0.3), lineWidth: 2)
-        )
-    }
     // MARK: Attachments Section
     private var attachmentsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
