@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI // For PhotosPicker and PhotosPickerItem
 import AVFoundation // For camera permission
 
 struct AttachmentsListView: View {
@@ -17,6 +18,8 @@ struct AttachmentsListView: View {
     @Binding var isBlurred: Bool
     @State private var showingImagePicker = false
     @State private var cameraImage: UIImage?
+    @State private var showingPhotosPicker = false
+    @State private var selectedPhotos: PhotosPickerItem? = nil // Single selection for now
     @State private var errorMessage: String?
     @State private var showErrorAlert = false
     
@@ -36,8 +39,7 @@ struct AttachmentsListView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    
-                    HStack(spacing: 20) { // Adjusted spacing
+                    HStack(spacing: 20) {
                         Text("Attachments")
                             .foregroundStyle(itemCategory.color)
                             .font(.system(size: 22, design: .serif))
@@ -63,10 +65,8 @@ struct AttachmentsListView: View {
                         .accessibilityLabel("Take Photo")
                         .accessibilityHint("Tap to take a photo")
                         
-                        Button(action: {
-                            print("Photos button tapped")
-                            hapticFeedback.impactOccurred()
-                        }) {
+                        // PhotosPicker overlay instead of button
+                        PhotosPicker(selection: $selectedPhotos, matching: .images, photoLibrary: .shared()) {
                             Image(systemName: "photo")
                                 .imageScale(.large)
                                 .foregroundStyle(itemCategory.color)
@@ -74,8 +74,15 @@ struct AttachmentsListView: View {
                                 .background(itemCategory.color.opacity(0.2))
                                 .clipShape(Circle())
                         }
+                        .buttonStyle(.borderless)
                         .accessibilityLabel("Add Photos")
                         .accessibilityHint("Tap to add photos")
+                        .onChange(of: selectedPhotos) { _, newValue in
+                            print("PhotosPicker selection changed: \(newValue != nil ? "item selected" : "nil")")
+                            if let newValue {
+                                loadTransferable(from: newValue)
+                            }
+                        }
                         
                         Button(action: {
                             print("Document button tapped")
@@ -121,7 +128,7 @@ struct AttachmentsListView: View {
                     .onAppear { print("Camera sheet appeared") }
                     .onDisappear { print("Camera sheet dismissed, image: \(cameraImage != nil ? "size: \(cameraImage!.size)" : "nil")") }
                     .accessibilityLabel("Camera picker")
-                    .accessibilityHint("Take a photo to attach")
+                    .accessibilityHint("Tap to take a photo to attach")
             }
             .onChange(of: cameraImage) { _, newValue in
                 print("Camera image changed: \(newValue != nil ? "size: \(newValue!.size)" : "nil")")
@@ -152,6 +159,38 @@ struct AttachmentsListView: View {
                 Text(errorMessage ?? "Unknown error")
                     .accessibilityLabel("Error: \(errorMessage ?? "Unknown error")")
             }
+        }
+    }
+    
+    // Load image data from PhotosPicker and save to SwiftData
+    private func loadTransferable(from imageSelection: PhotosPickerItem) {
+        Task {
+            print("Starting loadTransferable for PhotosPicker item")
+            if let data = try? await imageSelection.loadTransferable(type: Data.self) {
+                print("Loaded photo data: \(data.count) bytes")
+                let attachment = Attachment(data: data, fileName: "photo_\(Date().timeIntervalSince1970).jpg")
+                print("Created attachment: \(attachment.fileName)")
+                DispatchQueue.main.async {
+                    attachments.append(attachment)
+                    modelContext.insert(attachment)
+                    do {
+                        try modelContext.save()
+                        print("Saved attachment: \(attachment.fileName), count: \(attachments.count)")
+                    } catch {
+                        errorMessage = "Error saving photo: \(error.localizedDescription)"
+                        print("Save error: \(error)")
+                        showErrorAlert = true
+                    }
+                    selectedPhotos = nil
+                }
+            } else {
+                print("Failed to load photo data")
+                DispatchQueue.main.async {
+                    errorMessage = "Failed to load photo"
+                    showErrorAlert = true
+                }
+            }
+            print("loadTransferable completed")
         }
     }
 }
