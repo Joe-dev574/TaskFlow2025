@@ -20,6 +20,8 @@ struct AttachmentsListView: View {
     @State private var errorMessage: String?
     @State private var showErrorAlert = false
     
+    private let hapticFeedback = UIImpactFeedbackGenerator(style: .medium)
+    
     var sortedAttachments: [Attachment] {
         attachments.sorted { $0.creationDate > $1.creationDate }
     }
@@ -34,49 +36,61 @@ struct AttachmentsListView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    Text("Attachments")
-                        .foregroundStyle(itemCategory.color)
-                        .font(.system(size: 18, design: .serif))
-                        .fontWeight(.bold)
-                        .accessibilityLabel("Attachments Header")
                     
-                    Text("Count: \(attachments.count)")
-                        .font(.system(size: 14.4, design: .serif))
-                        .foregroundStyle(.gray)
-                        .accessibilityLabel("Current attachments count: \(attachments.count)")
-                    
-                    Button(action: {
-                        print("Camera button tapped")
-                        showingImagePicker = true
-                    }) {
-                        HStack {
+                    HStack(spacing: 20) { // Adjusted spacing
+                        Text("Attachments")
+                            .foregroundStyle(itemCategory.color)
+                            .font(.system(size: 22, design: .serif))
+                            .fontWeight(.bold)
+                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                            .accessibilityLabel("Attachments Header")
+                            .accessibilityHint("List of attachments for this item")
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            print("Camera button tapped")
+                            hapticFeedback.impactOccurred()
+                            showingImagePicker = true
+                        }) {
                             Image(systemName: "camera")
+                                .imageScale(.large)
                                 .foregroundStyle(itemCategory.color)
-                            Text("Take Photo")
-                                .foregroundStyle(itemCategory.color)
+                                .padding(7)
+                                .background(itemCategory.color.opacity(0.2))
+                                .clipShape(Circle())
                         }
-                        .padding(7)
-                        .background(itemCategory.color.opacity(0.2))
-                        .cornerRadius(8)
-                    }
-                    .accessibilityLabel("Take Photo")
-                    .accessibilityHint("Tap to take a photo")
-                    
-                    Button(action: {
-                        print("Photos button tapped")
-                    }) {
-                        HStack {
+                        .accessibilityLabel("Take Photo")
+                        .accessibilityHint("Tap to take a photo")
+                        
+                        Button(action: {
+                            print("Photos button tapped")
+                            hapticFeedback.impactOccurred()
+                        }) {
                             Image(systemName: "photo")
+                                .imageScale(.large)
                                 .foregroundStyle(itemCategory.color)
-                            Text("Add from Photos")
-                                .foregroundStyle(itemCategory.color)
+                                .padding(7)
+                                .background(itemCategory.color.opacity(0.2))
+                                .clipShape(Circle())
                         }
-                        .padding(7)
-                        .background(itemCategory.color.opacity(0.2))
-                        .cornerRadius(8)
+                        .accessibilityLabel("Add Photos")
+                        .accessibilityHint("Tap to add photos")
+                        
+                        Button(action: {
+                            print("Document button tapped")
+                            hapticFeedback.impactOccurred()
+                        }) {
+                            Image(systemName: "doc")
+                                .imageScale(.large)
+                                .foregroundStyle(itemCategory.color)
+                                .padding(7)
+                                .background(itemCategory.color.opacity(0.2))
+                                .clipShape(Circle())
+                        }
+                        .accessibilityLabel("Add Document")
+                        .accessibilityHint("Tap to add a document")
                     }
-                    .accessibilityLabel("Add from Photos")
-                    .accessibilityHint("Tap to select a photo from your library")
                     
                     if attachments.isEmpty {
                         Text("No attachments")
@@ -84,6 +98,11 @@ struct AttachmentsListView: View {
                             .foregroundStyle(.gray)
                             .accessibilityLabel("No attachments available")
                     } else {
+                        Text("Count: \(attachments.count)")
+                            .font(.system(size: 14.4, design: .serif))
+                            .foregroundStyle(.gray)
+                            .accessibilityLabel("Current attachments count: \(attachments.count)")
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(sortedAttachments) { attachment in
