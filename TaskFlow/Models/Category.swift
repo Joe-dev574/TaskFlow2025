@@ -5,7 +5,6 @@
 //  Created by Joseph DeWeese on 3/25/25.
 //
 
-import SwiftData
 import SwiftUI
 
 /// Represents different life domains and priority categories with associated styling
