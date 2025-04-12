@@ -44,10 +44,10 @@ struct NoteRowView: View {
                 .accessibilityHidden(true) // Decorative, no VoiceOver needed
             
             // Title in bold
-            Text(note.noteTitle)
+            Text(note.noteTitle ?? "Note:  ")
                 .font(.system(.headline, design: .serif, weight: .bold)) // Bold serif title
                 .foregroundStyle(colorScheme == .dark ? .white : .black) // Mode-adapted contrast
-                .accessibilityLabel("Note Title: \(note.noteTitle)") // VoiceOver label
+                .accessibilityLabel("Note Title: \(note.noteTitle ?? "Note")") // VoiceOver label
             
             // Page number (if provided)
             if let page = note.page {
@@ -85,10 +85,3 @@ struct NoteRowView: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    NoteRowView(note: Note(noteTitle: "Sample Title", text: "This is the note body text.", page: "42"))
-        .padding()
-        .preferredColorScheme(.light)
-}
