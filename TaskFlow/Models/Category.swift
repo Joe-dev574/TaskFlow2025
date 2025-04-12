@@ -25,19 +25,19 @@ enum Category: String, CaseIterable {
     var color: Color {
         switch self {
         case .today:
-            return .color1
+            return Color("Color 1")
         case .work:
-            return .color2
+            return Color("Color 2")
         case .family:
-            return .color3
+            return Color("Color 3")
         case .health:
-            return .color4
+            return Color("Color 4")
         case .events:
             return .primary
         case .learn:
-            return .color6
+            return Color("Color 6")
         case .bills:
-            return .color7
+            return Color("Color 7")
         }
     }
     
