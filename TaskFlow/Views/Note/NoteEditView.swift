@@ -61,7 +61,7 @@ struct NoteEditView: View {
         self._note = note
         self.itemCategory = itemCategory
         self.onSave = onSave
-        self._noteTitle = State(initialValue: note.wrappedValue.noteTitle)
+        self._noteTitle = State(initialValue: note.wrappedValue.noteTitle ?? "Notes:")
         self._text = State(initialValue: note.wrappedValue.text)
         self._page = State(initialValue: note.wrappedValue.page ?? "")
     }
@@ -304,7 +304,7 @@ struct NoteEditView: View {
 
 #Preview {
     NoteEditView(
-        note: .constant(Note(noteTitle: "Sample Title", text: "Sample note content here.", page: "42")),
+        note: .constant(Note(text: "Sample note content here.", page: "42", noteTitle: "Sample Title")),
         itemCategory: .bills,
         onSave: { _ in }
     )
