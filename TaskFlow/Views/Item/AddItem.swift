@@ -55,7 +55,7 @@ struct AddItem: View {
     /// Stores the message to display in the error alert
     @State private var errorMessage: String = ""
     
-    /// Random tint color for the item
+    /// Random tint color for the item - color picker
     @State private var tint: TintColor = tints.randomElement()!
     
     // MARK: - Initialization
