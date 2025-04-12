@@ -62,12 +62,12 @@ struct TaskListView: View {
     
     /// Main view body, containing the task list header and content
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             // Header with "Tasks" title and Add Task button
             HStack {
                 Text("Tasks")
                     .foregroundStyle(itemCategory.color)
-                    .font(.system(size: 22, design: .serif))
+                    .font(.system(size: 18, design: .serif))
                     .fontWeight(.bold)
                     .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                     .accessibilityLabel("Tasks Header")

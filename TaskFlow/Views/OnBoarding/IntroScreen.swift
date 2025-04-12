@@ -26,11 +26,11 @@ struct IntroScreen: View {
     private let features: [(title: String, symbol: String, color: Color)] = [
         ("Create Tasks", "checkmark.circle", Category.today.color),
         ("Create Projects", "folder.badge.plus", Category.work.color),
-        ("Organize with Categories", "square.grid.2x2", Category.family.color),
+        ("Categorize", "square.grid.2x2", Category.family.color),
         ("Tags", "tag", Category.health.color),
         ("Notes", "note.text", Category.learn.color),
-        ("Attach Files", "paperclip", Category.bills.color),
-        ("Export Reports", "square.and.arrow.up", Category.events.color)
+        ("Attachments", "paperclip", Category.bills.color),
+        ("Export", "square.and.arrow.up", Category.events.color)
     ]
     
     // MARK: - Body
@@ -103,15 +103,15 @@ struct IntroScreen: View {
                         }
                     }) {
                         Text("Next")
-                            .font(.system(size: 16, weight: .semibold, design: .serif))
+                            .font(.system(size: 18, weight: .semibold, design: .serif))
                             .foregroundStyle(.white)
-                            .frame(maxWidth: 375, minHeight: 50)
+                            .frame(maxWidth: 325, minHeight: 50)
                             .padding(.horizontal, 24)
                             .background(Category.today.color)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .shadow(color: Category.today.color.opacity(0.3), radius: 4, x: 0, y: 2)
                     }
-                    .padding(.bottom, 80)
+                    .padding(.bottom, 20)
                     .accessibilityLabel("Next")
                     .accessibilityHint("Tap to proceed to sign in")
                     .transition(.opacity)

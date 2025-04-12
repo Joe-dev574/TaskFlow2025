@@ -160,10 +160,10 @@ struct ItemEditView: View {
     
     // MARK: Item Title Section
     private var titleSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Title")
                 .foregroundStyle(itemCategory.color)
-                .font(.system(size: 20, design: .serif))
+                .font(.system(size: 18, design: .serif))
                 .fontWeight(.bold)
             LabeledContent {
                 CustomTextEditor(
@@ -192,10 +192,10 @@ struct ItemEditView: View {
     
     // MARK: Item Description Text Editor
     private var remarksSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Brief Description")
                 .foregroundStyle(itemCategory.color)
-                .font(.system(size: 20, design: .serif))
+                .font(.system(size: 18, design: .serif))
                 .fontWeight(.bold)
             CustomTextEditor(
                 remarks: $taskDescription,
@@ -220,10 +220,10 @@ struct ItemEditView: View {
     
     // MARK: Category Section
     private var categorySection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Category")
                 .foregroundStyle(itemCategory.color)
-                .font(.system(size: 20, design: .serif))
+                .font(.system(size: 18, design: .serif))
                 .fontWeight(.bold)
             LabeledContent {
                 CategorySelector(
@@ -252,7 +252,7 @@ struct ItemEditView: View {
     
     // MARK: Tag Section
     private var tagsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             TagListView(item: editItem, itemCategory: itemCategory, isBlurred: $isBlurred)
                 .padding(SectionStyle.padding)
                 .background(itemCategory.color.opacity(SectionStyle.reducedOpacity))
@@ -272,10 +272,10 @@ struct ItemEditView: View {
     
     // MARK: Status Section
     private var statusSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Status")
                 .foregroundStyle(itemCategory.color)
-                .font(.system(size: 20, design: .serif))
+                .font(.system(size: 18, design: .serif))
                 .fontWeight(.bold)
             LabeledContent {
                 Picker("Status", selection: $itemStatus) {
@@ -306,10 +306,10 @@ struct ItemEditView: View {
     
     // MARK: Dates Section
     private var datesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Dates")
                 .foregroundStyle(itemCategory.color)
-                .font(.system(size: 20, design: .serif))
+                .font(.system(size: 18, design: .serif))
                 .fontWeight(.bold)
             VStack(spacing: 8) {
                 LabeledContent {

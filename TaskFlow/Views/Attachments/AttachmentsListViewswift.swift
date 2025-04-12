@@ -54,11 +54,11 @@ struct AttachmentsListView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 10) {
-                    HStack(spacing: 20) {
+                VStack {
+                    HStack(spacing: 5) {
                         Text("Attachments")
                             .foregroundStyle(itemCategory.color)
-                            .font(.system(size: 22, design: .serif))
+                            .font(.system(size: 18, design: .serif))
                             .fontWeight(.bold)
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                             .accessibilityLabel("Attachments Header")

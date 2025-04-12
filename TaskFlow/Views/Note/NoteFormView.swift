@@ -30,12 +30,12 @@ struct NoteFormView: View {
                     
                     CustomTextEditor(
                         remarks: $text,
-                        placeholder: "  Write your note here...",
+                        placeholder: "Write your note here...",
                         minHeight: 300
                     )
                     
                     HStack(spacing: 2) {
-                        Text("Page: ")
+                        Text("Page:")
                         TextField("Page # (optional)", text: $page)
                         Spacer()
                     }
