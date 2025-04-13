@@ -14,7 +14,7 @@ struct OnboardingView: View {
 
     var body: some View {
         if currentPage == Int.max {
-            ItemScreen(itemCategory: .today)
+            ItemListScreen(itemCategory: .today)
                 .transition(.opacity)
                 .accessibilityLabel("Main Task Flow App")
                 .accessibilityHint("Displays your tasks, projects, and notes")

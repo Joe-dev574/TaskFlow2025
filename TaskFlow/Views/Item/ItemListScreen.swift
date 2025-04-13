@@ -8,122 +8,96 @@
 import SwiftData
 import SwiftUI
 
-/// A view displaying a list of items with a fixed toolbar for navigation and actions
-struct ItemScreen: View {
-    // MARK: - Environment and State Properties
-    // MARK: - Environment and State Properties
+struct ItemListScreen: View {
     @Environment(\.modelContext) private var modelContext
-    
     @AppStorage("themeChoice") private var themeChoice = "Light"
     @AppStorage("selectedColor") private var selectedColorData = Color.blue.toHex() ?? "#0000FF"
-    @State private var showAddItemSheet: Bool = false  // Toggles the add item sheet visibility
-    @State private var showTaskListSheet: Bool = false
-    @State private var currentDate: Date = Date()  // Tracks current date for header display
+    @State private var showAddItemSheet = false
+    @State private var showTaskListSheet = false
+    @State private var currentDate = Date()
     @State var itemCategory: Category
-    private var selectedColor: Color {
-        Color(hex: selectedColorData)
-    }
-    // MARK: - Body
+    private var selectedColor: Color { Color(hex: selectedColorData) }
+
     var body: some View {
         NavigationStack {
-            ZStack {  // Use ZStack to layer content and button
-                ScrollView {  // Isolate scrolling to ItemList
+           
+            ZStack {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        ItemList()  // Displays the list of items
-                            .padding(.top, 10)  // Add padding to avoid overlap with toolbar
+                        ItemList()
+                            .padding(.top, 10)
                     }
-                    .frame(maxWidth: .infinity)  // Ensure full width
+                    .frame(maxWidth: .infinity)
                 }
-                .scrollContentBackground(.hidden)  // Optional: hide default scroll background
+                .scrollContentBackground(.hidden)
 
-                addItemButton  // Floating action button pinned to bottom-right
-                    .frame(
-                        maxWidth: .infinity, maxHeight: .infinity,
-                        alignment: .centerLastTextBaseline)
+                addItemButton
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .centerLastTextBaseline)
             }
-            .blur(radius: showAddItemSheet ? 8 : 0)  // Blurs content when sheet is active
-            .sheet(isPresented: $showAddItemSheet) {  // Presents sheet for adding new items
+            .blur(radius: showAddItemSheet ? 8 : 0)
+            .sheet(isPresented: $showAddItemSheet) {
                 AddItem()
                     .presentationDetents([.large])
             }
-            .toolbar { toolbarItems }  // Configures fixed toolbar
-            .toolbarBackground(.visible, for: .navigationBar)  // Ensures toolbar background stays visible
-            .navigationBarTitleDisplayMode(.inline)  // Keeps toolbar compact and pinned
+            .toolbar(content: toolbarContent)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
-    // MARK: - Subviews
-    /// Floating button to trigger the add item sheet
+
     private var addItemButton: some View {
         Button(action: {
             showAddItemSheet = true
-            HapticsManager.notification(type: .success)  // Provides haptic feedback on tap
+            HapticsManager.notification(type: .success)
         }) {
             Image(systemName: "plus")
                 .font(.callout)
                 .foregroundStyle(.white)
                 .frame(width: 45, height: 45)
-                .background(selectedColor.gradient)  // Use itemCategory.color
-                .shadow(radius: 5, x: 5, y: 5)
+                .background(selectedColor.opacity(0.8))
+                .shadow(radius: 2)
                 .clipShape(Circle())
-                
         }
-        .offset(x: 0, y: -20)////control height of add item button for future  reference of a bottom tab bar
-        .padding()  // Adds padding around button
+        .offset(x: 0, y: -20)
+        .padding()
         .accessibilityLabel("Add New Item")
     }
 
-    //MARK: Custom header view for the toolbar
-    @ViewBuilder
-    private func headerView() -> some View {
-        HStack(spacing: 8) {  // Reduced crowding with tighter spacing
-            VStack(alignment: .leading, spacing: 2) {  // Compact vertical stack for date
-                Text(currentDate.format("MMMM YYYY"))  // Combines month and year in one line
-                    .font(.title2.bold())  // Smaller, bold font for clarity
-                    .foregroundStyle(itemCategory.color.gradient)
-
-                Text(currentDate.format("EEEE, d"))  // Day and weekday on second line
-                    .font(.callout)  // Smaller font for less emphasis
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            NavigationLink(destination: SettingsView()) {
+                GearButtonView()
+                    .frame(width: 30, height: 25)
+                    .foregroundStyle(selectedColor)
+                    .padding(.bottom, 5)
+            }
+            .accessibilityLabel("Settings")
+        }
+        ToolbarItem(placement: .principal) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(currentDate.format("MMMM YYYY"))
+                    .font(.title2.bold())
+                    .foregroundStyle(itemCategory.color)
+                Text(currentDate.format("EEEE, d"))
+                    .font(.callout)
                     .foregroundStyle(.primary)
             }
-            Spacer()  // Pushes logo to the right
+            .padding(.horizontal, 12)
+            .padding(.bottom, 7)
         }
-        .padding(.horizontal, 12)  // Consistent horizontal padding
-    }
-
-    // MARK: - Toolbar Configuration
-    /// Defines toolbar items for navigation and actions
-    private var toolbarItems: some ToolbarContent {
-        Group {
-            ToolbarItem(placement: .navigationBarLeading) {  // Sidebar toggle button
-                NavigationLink(destination: SettingsView()) {
-                    GearButtonView()  // Compact logo
-                        .frame(width: 30, height: 25)  // Reduced size for toolbar fit
-                        .foregroundStyle(selectedColor.gradient)
-                        .padding(.bottom, 5)
-                }
-                .accessibilityLabel("Settings")
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink(destination: ProfileView()) {
+                Image(systemName: "person.circle")
+                    .font(.title)
+                    .foregroundStyle(selectedColor)
             }
-
-            ToolbarItem(placement: .principal) {  // Custom header in center
-                headerView().padding(.bottom, 7)
-            }
-
-            ToolbarItem(placement: .navigationBarTrailing) {  // Profile navigation link
-                NavigationLink(destination: ProfileView()) {
-                    Image(systemName: "person.circle")
-                        .font(.title)
-                        .foregroundStyle(selectedColor.gradient)
-                }
-                .accessibilityLabel("Profile")
-            }
+            .accessibilityLabel("Profile")
         }
     }
 }
-// MARK: - Preview
 
-/// Preview provider for ItemScreen
 #Preview {
-    ItemScreen(itemCategory: .events) // Requires Category enum with .events case
-        .modelContainer(for: [Item.self, ItemTask.self]) // Matches schema
+    ItemListScreen(itemCategory: .events)
+        .modelContainer(for: [Item.self, ItemTask.self])
 }

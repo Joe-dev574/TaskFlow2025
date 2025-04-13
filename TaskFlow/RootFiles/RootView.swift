@@ -14,7 +14,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if let user = try? modelContext.fetch(FetchDescriptor<User>()).first, user.isOnboardingComplete {
-                ItemScreen(itemCategory: .today) // Default category
+                ItemListScreen(itemCategory: .today) // Default category
                     .accessibilityLabel("Main Task Flow App")
                     .accessibilityHint("Displays your tasks, projects, and notes")
             } else {
