@@ -223,28 +223,3 @@ struct ActionBuilder {
     }
 }
 
-// MARK: - Example Usage
-
-/// Example of how to use SwipeAction in a view (e.g., TaskListView).
-/*
-SwipeAction(
-    cornerRadius: 12,
-    direction: .trailing,
-    content: {
-        Text("Task Name")
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.gray.opacity(0.1))
-    },
-    actions: {
-        Action(tint: .red, icon: "trash", action: { print("Delete") }) {
-            accessibilityLabel = "Delete task"
-            accessibilityHint = "Tap to delete this task"
-        }
-        Action(tint: .blue, icon: "pencil", action: { print("Edit") }) {
-            accessibilityLabel = "Edit task"
-            accessibilityHint = "Tap to edit this task"
-        }
-    }
-)
-*/

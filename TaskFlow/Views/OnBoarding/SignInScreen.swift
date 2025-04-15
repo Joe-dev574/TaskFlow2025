@@ -83,7 +83,6 @@ struct SignInScreen: View {
         .padding(.vertical, 40)
         .padding(.bottom, 30) // Positions button 30pt from bottom
         .hSpacing(.center)
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK") { showErrorAlert = false }
         } message: {

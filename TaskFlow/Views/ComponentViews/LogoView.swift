@@ -13,9 +13,6 @@ import SwiftUI
 struct LogoView: View {
     // MARK: - Animation States
     
-    /// The rotation angle of the gear in degrees
-    @State private var rotationAngle: Double = 0.0
-    
     /// The opacity level of the gear
     @State private var gearOpacity: Double = Constants.initialGearOpacity
     
@@ -40,42 +37,23 @@ struct LogoView: View {
     
     var body: some View {
         HStack(spacing: Constants.spacing) {
-            // Gear icon with animation and glow effects
+            // Gear icon
             Image(systemName: "gearshape.2.fill")
                 .resizable()
-                .frame(width: Constants.gearSize, height: Constants.gearSize)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: gearGradientColors,
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .opacity(gearOpacity)
-                .rotationEffect(.degrees(rotationAngle))
-                .scaleEffect(gearScale)
-                .shadow(color: glowColor, radius: 5, x: 0, y: 2)
-                .overlay(
-                    Circle()
-                        .stroke(glowColor, lineWidth: 1)
-                        .scaleEffect(gearScale * 1.2)
-                        .opacity(glowIntensity)
-                )
-                .onAppear(perform: startAnimation)
-                .accessibilityLabel("Animated gear icon")
+                .tint(.darkBlue)
+                .frame(width: 40, height: 40)
                 .accessibilityHint("Part of the Task Flow logo")
-                .accessibilityHidden(reduceMotion) // Hides animation details if motion reduced
             
             // Text group with dynamic styling
             HStack(spacing: Constants.textSpacing) {
                 Text("Task")
                     .font(.custom("Avenir-Heavy", size: 18))
-                    .foregroundStyle(textGradient)
+                    .foregroundStyle(.lightGrey)
                     .offset(y: textOffset)
                 
                 Text("Flow")
                     .font(.custom("Avenir-Black", size: 18))
-                    .foregroundStyle(textGradient)
+                    .foregroundStyle(.lightBlue )
                     .offset(y: -textOffset)
                 
                 Text("1.0")
@@ -91,7 +69,7 @@ struct LogoView: View {
         }
         .padding(.vertical, 8)
         .frame(maxHeight: Constants.maxHeight)
-        .background(backgroundOverlay)
+ //       .background(backgroundOverlay)
     }
     
     // MARK: - Adaptive Styling
@@ -99,19 +77,8 @@ struct LogoView: View {
     /// Gradient colors for the gear, adjusted for color scheme
     private var gearGradientColors: [Color] {
         colorScheme == .dark
-            ? [.cyan.opacity(0.9), .purple.opacity(0.7)]
-            : [.blue.opacity(0.9), .cyan.opacity(0.7)]
-    }
-    
-    /// Gradient for text, optimized for readability
-    private var textGradient: LinearGradient {
-        LinearGradient(
-            colors: colorScheme == .dark
-                ? [.white.opacity(0.9), .gray.opacity(0.7)]
-                : [.black.opacity(0.9), .gray.opacity(0.8)],
-            startPoint: .top,
-            endPoint: .bottom
-        )
+        ? [.cyan.opacity(0.7), .purple.opacity(0.5)]
+        : [.blue.opacity(0.7), .cyan.opacity(0.5)]
     }
     
     /// Color for the version number, mode-specific
@@ -126,7 +93,7 @@ struct LogoView: View {
     
     /// Shadow color with mode-appropriate opacity
     private var shadowColor: Color {
-        colorScheme == .dark ? .gray.opacity(0.4) : .gray.opacity(0.2)
+        colorScheme == .dark ? .gray.opacity(0.5) : .gray.opacity(0.3)
     }
     
     /// Background overlay for contrast enhancement
@@ -145,59 +112,9 @@ struct LogoView: View {
         static let finalGearOpacity: Double = 0.85
         static let spacing: CGFloat = 6
         static let textSpacing: CGFloat = 3
-        static let fastDuration: Double = 0.6
-        static let slowDuration: Double = 0.4
-        static let fadeDuration: Double = 0.25
-        static let pulseDuration: Double = 1.0
-        static let fastRotations: Double = 1.25
         static let maxHeight: CGFloat = 40
     }
-    
-    // MARK: - Animation
-    
-    /// Orchestrates the logo's animation sequence, respecting reduced motion settings
-    private func startAnimation() {
-        guard !reduceMotion else {
-            gearOpacity = Constants.finalGearOpacity // Static state for no motion
-            return
         }
-        
-        // 1. Initial fast spin and scale up with glow
-        withAnimation(.easeInOut(duration: Constants.fastDuration)) {
-            rotationAngle = 360 * Constants.fastRotations
-            gearScale = 1.15
-            glowIntensity = 0.5
-        }
-        
-        // 2. Bounce and settle with spring effect
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.fastDuration) {
-            withAnimation(.spring(response: Constants.slowDuration, dampingFraction: 0.7)) {
-                rotationAngle = 360 * Constants.fastRotations + 30
-                gearScale = 0.95
-                textOffset = 3
-                glowIntensity = 0.3
-            }
-        }
-        
-        // 3. Final settle with fade
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.fastDuration + Constants.slowDuration) {
-            withAnimation(.easeInOut(duration: Constants.fadeDuration)) {
-                gearOpacity = Constants.finalGearOpacity
-                gearScale = 1.0
-                textOffset = 0
-            }
-        }
-        
-        // 4. Continuous subtle pulse with glow
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.fastDuration + Constants.slowDuration + Constants.fadeDuration) {
-            withAnimation(.easeInOut(duration: Constants.pulseDuration).repeatForever(autoreverses: true)) {
-                gearScale = 1.05
-                glowIntensity = 0.4
-            }
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview {

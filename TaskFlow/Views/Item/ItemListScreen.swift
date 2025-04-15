@@ -20,7 +20,6 @@ struct ItemListScreen: View {
 
     var body: some View {
         NavigationStack {
-           
             ZStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
@@ -34,28 +33,25 @@ struct ItemListScreen: View {
                 addItemButton
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .centerLastTextBaseline)
             }
-            .blur(radius: showAddItemSheet ? 8 : 0)
             .sheet(isPresented: $showAddItemSheet) {
                 AddItem()
-                    .presentationDetents([.large])
+                    .presentationDetents([.medium])
             }
             .toolbar(content: toolbarContent)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.clear, for: .navigationBar)
         }
     }
 
     private var addItemButton: some View {
         Button(action: {
             showAddItemSheet = true
-            HapticsManager.notification(type: .success)
         }) {
             Image(systemName: "plus")
                 .font(.callout)
                 .foregroundStyle(.white)
                 .frame(width: 45, height: 45)
-                .background(selectedColor.opacity(0.8))
-                .shadow(radius: 2)
+                .background(.darkBlue)
+                .shadow(radius: 3)
                 .clipShape(Circle())
         }
         .offset(x: 0, y: -20)
@@ -67,10 +63,10 @@ struct ItemListScreen: View {
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             NavigationLink(destination: SettingsView()) {
-                GearButtonView()
-                    .frame(width: 30, height: 25)
-                    .foregroundStyle(selectedColor)
-                    .padding(.bottom, 5)
+                Image(systemName: "gear")
+                    .font(.title)
+                    .foregroundStyle(.color1)
+                    .padding(.bottom, 2)
             }
             .accessibilityLabel("Settings")
         }
@@ -78,7 +74,7 @@ struct ItemListScreen: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(currentDate.format("MMMM YYYY"))
                     .font(.title2.bold())
-                    .foregroundStyle(itemCategory.color)
+                    .foregroundStyle(.color1)//blue
                 Text(currentDate.format("EEEE, d"))
                     .font(.callout)
                     .foregroundStyle(.primary)
@@ -90,7 +86,7 @@ struct ItemListScreen: View {
             NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
                     .font(.title)
-                    .foregroundStyle(selectedColor)
+                    .foregroundStyle(.color1)
             }
             .accessibilityLabel("Profile")
         }
