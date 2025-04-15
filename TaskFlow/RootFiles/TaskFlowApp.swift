@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
-import SwiftData
 
-/// The main entry point for the TaskFlow2025 app.
-/// Configures SwiftData persistence and sets RootView as the entry scene.
 @main
-struct TaskFlow2025App: App {
+struct TaskFlowApp: App {
     var body: some Scene {
         WindowGroup {
-            RootView()
+            IntroScreen()
+                .modelContainer(for: [Item.self, Note.self, User.self, Tag.self, ItemTask.self, Attachment.self])
         }
-        .modelContainer(for: [Item.self, Note.self, User.self, Tag.self, ItemTask.self, Attachment.self])
     }
 }

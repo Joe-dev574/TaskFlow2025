@@ -32,6 +32,3 @@ struct TagRowView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
