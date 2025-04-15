@@ -1,0 +1,25 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "symbol-rendering-intent" : "multicolor"
+  },
+  "symbols" : [
+    {
+      "filename" : "filemenu.and.cursorarrow.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "filemenu.and.cursorarrow 1.svg",
+      "idiom" : "universal"
+    }
+  ]
+}
