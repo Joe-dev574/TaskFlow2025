@@ -39,11 +39,22 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		374807932DAF25D500A711D2 /* Exceptions for "TaskFlow" folder in "Compile Sources" phase from "TaskFlow" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 375F160F2D91D0CD00D3BE21 /* Sources */;
+			membershipExceptions = (
+				LaunchScreen.storyboard,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		375F16152D91D0CD00D3BE21 /* TaskFlow */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				37CFCC512DA4506800709EAD /* Exceptions for "TaskFlow" folder in "TaskFlow" target */,
+				374807932DAF25D500A711D2 /* Exceptions for "TaskFlow" folder in "Compile Sources" phase from "TaskFlow" target */,
 			);
 			path = TaskFlow;
 			sourceTree = "<group>";

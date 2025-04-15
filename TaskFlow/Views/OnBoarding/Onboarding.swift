@@ -6,23 +6,21 @@
 //
 
 import SwiftUI
-import SwiftData
+import AuthenticationServices
 
-struct OnboardingView: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var currentPage: Int = 0
-
+struct Onboarding: View {
     var body: some View {
-        if currentPage == Int.max {
-            ItemListScreen(itemCategory: .today)
-     //           .transition(.opacity)
-                .accessibilityLabel("Main Task Flow App")
-                .accessibilityHint("Displays your tasks, projects, and notes")
-        } else {
-                    IntroScreen(currentPage: $currentPage)
-                        .accessibilityLabel("Features Screen")
-                        .accessibilityHint("Showcases TaskFlow’s key features")
-                }
+        VStack {
+            Text("Sign in to TaskFlow")
+                .font(.title)
+            
+            SignInWithAppleButton(.signIn) { request in
+                request.requestedScopes = [.fullName, .email]
+            } onCompletion: { result in
+                // Handle authentication
             }
-      
+            .frame(height: 50)
+            .padding()
         }
+    }
+}
